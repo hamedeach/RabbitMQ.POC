@@ -17,7 +17,7 @@ channel.QueueDeclare(queue: "echoQ",
 
 while (true)
 {
-    Thread.Sleep(1000);
+    Task.Delay(TimeSpan.FromSeconds(1)).Wait();
     var message = $" time :  {DateTime.Now.ToLongTimeString()}";
     var encodedMessage = Encoding.UTF8.GetBytes(message);
     channel.BasicPublish("", "echoQ", null, encodedMessage);
