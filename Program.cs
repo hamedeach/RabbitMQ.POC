@@ -9,18 +9,18 @@ var connection = factory.CreateConnection();
 
 using var channel = connection.CreateModel();
 
-channel.QueueDeclare(queue: "echoQ",
-    durable: false,
-    exclusive: false,
-    autoDelete: false,
-    arguments: null);
+// for pub/ sub the producer shall not declare any queue each consumer shall declare its queue
+// declare the exchange where the producer send its messages
+//fan out exchange use to broadcasting
+channel.ExchangeDeclare(exchange: "pubsub", type: ExchangeType.Fanout);
 
 while (true)
 {
     Task.Delay(TimeSpan.FromSeconds(1)).Wait();
     var message = $" time :  {DateTime.Now.ToLongTimeString()}";
     var encodedMessage = Encoding.UTF8.GetBytes(message);
-    channel.BasicPublish("", "echoQ", null, encodedMessage);
+    //send the defined exchange as a param
+    channel.BasicPublish(exchange:"pubsub", "", null, encodedMessage);
 
     Console.WriteLine($"Producer publish {message}");
 };
