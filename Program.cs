@@ -2,7 +2,7 @@
 using RabbitMQ.Client;
 using System.Text;
 
-Console.WriteLine("********RabbitMQ Producer APP***********");
+Console.WriteLine("******** RabbitMQ Producer APP ***********");
 
 var factory = new ConnectionFactory { HostName = "localhost" };
 var connection = factory.CreateConnection();
@@ -18,7 +18,7 @@ channel.QueueDeclare(queue: "echoQ",
 while (true)
 {
     Thread.Sleep(1000);
-    var message = $"OF A7 Gamed at {DateTime.Now.ToLongTimeString()}";
+    var message = $" time :  {DateTime.Now.ToLongTimeString()}";
     var encodedMessage = Encoding.UTF8.GetBytes(message);
     channel.BasicPublish("", "echoQ", null, encodedMessage);
 
